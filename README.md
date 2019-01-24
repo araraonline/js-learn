@@ -1,7 +1,7 @@
 Hey!
 
-This is a repository made for storing personal learning exercises...
+In this repository I will solve lots of programming exercises in javascript, to see if I start getting the hang of the language!
 
-All exercises will be solved in JavaScript and I'm following the problems posed by Adrien Neumann here:
+The exercises will be the ones posed by Adrian Neumann here:
 
 <https://adriann.github.io/programming_problems.html>
