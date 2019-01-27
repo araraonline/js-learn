@@ -82,9 +82,9 @@ function multiply(num1, num2) {
     for (let digit2 of num2) {
         let addend = [];
 
-        // add initial zeros
+        // initial zeros
         for (let i = 0; i < addends.length; i++)
-            addend.push(0);            
+            addend.push(0);
 
         let carry = 0;
         for (let digit1 of num1) {
