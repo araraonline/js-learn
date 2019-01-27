@@ -1,6 +1,30 @@
 // adult knowledge that is necessary for performing digit-based operations
 
 
+// addition
+
+ADD_INCREMENT = function(a) {
+    if (a < 0 || a > 18) {
+        throw new Error("ADD_INCREMENT argument must be between 0 and 18 (inclusive)");
+    }
+
+    return ++a;
+};
+
+ADD_ADDDIGIT = function(a, b) {
+    if (a < 0 || a > 9 || b < 0 || b  > 9) {
+        throw new Error("ADD_ADDDIGIT arguments must be between 0 and 9 (inclusive)");
+    }
+
+    let result = a + b;
+    if (result < 10) {
+        return [result];
+    } else {
+        return [result % 10, 1];
+    }
+};
+
+
 // subtraction
 
 SUB_INCREMENT = function(a) {
@@ -44,6 +68,11 @@ SUB_SUBTRACTDIGIT = function(a, b) {
     }
 
     return result;
+}
+
+exports.ADD = {
+    INCREMENT: ADD_INCREMENT,
+    ADDDIGIT: ADD_ADDDIGIT,
 }
 
 exports.SUB = {
