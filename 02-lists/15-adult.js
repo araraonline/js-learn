@@ -1,6 +1,26 @@
 // adult knowledge that is necessary for performing digit-based operations
 
 
+// utils
+
+function toDigits(number) {
+    let digits = [];
+    while (number !== 0) {
+        digits.push(number % 10);
+        number = Math.floor(number / 10);
+    }
+    return digits;
+}
+
+function toNumber(digits) {
+    let number = 0;
+    for (let i = 0; i < digits.length; i++) {
+        number += digits[i] * (10 ** i);
+    }
+    return number;
+}
+
+
 // addition
 
 ADD_INCREMENT = function(a) {
@@ -70,6 +90,34 @@ SUB_SUBTRACTDIGIT = function(a, b) {
     return result;
 }
 
+
+// multiplication
+
+MUL_ADDDIGIT = function(number, digit) {
+    number = toNumber(number);
+
+    if (number < 0 || number > 81) {
+        throw new Error("SUB_ADDDIGIT number must be between 0 and 81 (inclusive)");
+    } else if (digit < 0 || digit > 8) {
+        throw new Error("SUB_ADDDIGIT digit must be between 0 and 8 (inclusive)");
+    }
+
+    return toDigits(number + digit);
+}
+
+MUL_MULTIPLYDIGIT = function(a, b) {
+    if (a < 0 || a > 9 || b < 0 || b > 9) {
+        throw new Error("SUB_MULTIPLYDIGIT arguments must be between 0 and 9 (inclusive)");
+    }
+
+    let result = a * b;
+    if (result < 10) {
+        return [result];
+    } else {
+        return [result % 10, Math.floor(result / 10)]
+    }
+}
+
 exports.ADD = {
     INCREMENT: ADD_INCREMENT,
     ADDDIGIT: ADD_ADDDIGIT,
@@ -81,3 +129,9 @@ exports.SUB = {
     LOWERTHAN: SUB_LOWERTHAN,
     SUBTRACTDIGIT: SUB_SUBTRACTDIGIT
 }
+
+exports.MUL = {
+    ADDDIGIT: MUL_ADDDIGIT,
+    MULTIPLYDIGIT: MUL_MULTIPLYDIGIT
+}
+    

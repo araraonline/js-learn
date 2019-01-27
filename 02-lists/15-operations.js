@@ -1,4 +1,4 @@
-const {ADD, SUB} = require('./15-adult.js');
+const {ADD, SUB, MUL} = require('./15-adult.js');
 
 function toDigits(number) {
     let digits = [];
@@ -74,6 +74,42 @@ function subtract(num1, num2) {
     return toNumber(result);
 }
 
+function multiply(num1, num2) {
+    num1 = toDigits(num1);
+    num2 = toDigits(num2);
+
+    let addends = [];
+    for (let digit2 of num2) {
+        let addend = [];
+
+        // add initial zeros
+        for (let i = 0; i < addends.length; i++)
+            addend.push(0);            
+
+        let carry = 0;
+        for (let digit1 of num1) {
+            let result = MUL.MULTIPLYDIGIT(digit1, digit2);
+            result = MUL.ADDDIGIT(result, carry);
+            if (result.length === 1) {
+                addend.push(result[0]);
+                carry = 0;
+            } else if (result.length === 2) {
+                addend.push(result[0]);
+                carry = result[1];
+            } else {
+                throw new Error();
+            }
+        }
+        if (carry)
+            addend.push(carry);
+
+        addends.push(addend);
+    }
+
+    let total = addends.map(toNumber).reduce((sum, number) => add(sum, number), 0);
+    return total;
+}
+
 function tests() {
     function check(a, b) {
         if (JSON.stringify(a) !== JSON.stringify(b)) {
@@ -101,6 +137,14 @@ function tests() {
     check(subtract(15, 9), 6);
     check(subtract(150, 99), 51);
     check(subtract(154859, 48594), 106265);
+
+    check(multiply(0, 0), 0);
+    check(multiply(1, 1), 1);
+    check(multiply(2, 3), 6);
+    check(multiply(1, 12), 12);
+    check(multiply(12, 1), 12);
+    check(multiply(12, 23), 276);
+    check(multiply(1234, 11), 13574);
 
     console.log("tests ok");
 }
