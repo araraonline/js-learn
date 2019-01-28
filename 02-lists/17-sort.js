@@ -9,6 +9,34 @@ function swap(array, i, j) {
     array[j] = value;
 }
 
+function merge(array1, array2) {
+    // merge two sorted arrays
+    let merged = [];
+
+    let i = 0, j = 0;
+    while (i < array1.length && j < array2.length) {
+        if (array1[i] <= array2[j]) {
+            merged.push(array1[i]);
+            i++;
+        } else {
+            merged.push(array2[j]);
+            j++;
+        }
+    }
+
+    while (i < array1.length) {
+        merged.push(array1[i]);
+        i++;
+    }
+
+    while (j < array2.length) {
+        merged.push(array2[j]);
+        j++;
+    }
+
+    return merged
+}
+
 function selection(array) {
     array = array.slice();  // use copy
     for (let i = 0; i < array.length - 1; i++) {
@@ -35,8 +63,18 @@ function insertion(array) {
     return array;
 }
 
+function mergesort(array) {
+    if (array.length === 1) return array.slice();
 
-console.log(insertion([1, 2, 3, 4]));
-console.log(insertion([1, 2, 4, 3]));
-console.log(insertion([2, 1, 4, 3]));
-console.log(insertion([4, 3, 2, 1]));
+    let midpoint = Math.ceil(array.length / 2);
+    return merge(
+        mergesort(array.slice(0, midpoint)),
+        mergesort(array.slice(midpoint))
+    );
+}
+
+
+console.log(mergesort([1, 2, 3, 4]));
+console.log(mergesort([1, 2, 4, 3]));
+console.log(mergesort([2, 1, 4, 3]));
+console.log(mergesort([4, 3, 2, 1]));
