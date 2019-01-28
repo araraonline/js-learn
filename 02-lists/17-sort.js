@@ -28,7 +28,7 @@ function insertion(array) {
         let value = array[i];
         let j = i - 1;
         for (; array[j] > value && j >= 0; j--) {
-            swap(array, j, j + 1);            
+            swap(array, j, j + 1);
         }
         array[j + 1] = value;
     }
