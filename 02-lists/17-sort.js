@@ -22,8 +22,21 @@ function selection(array) {
     return array;
 }
 
+function insertion(array) {
+    array = array.slice();
+    for (let i = 0; i < array.length; i++) {
+        let value = array[i];
+        let j = i - 1;
+        for (; array[j] > value && j >= 0; j--) {
+            swap(array, j, j + 1);            
+        }
+        array[j + 1] = value;
+    }
+    return array;
+}
 
-console.log(selection([1, 2, 3, 4]));
-console.log(selection([1, 2, 4, 3]));
-console.log(selection([2, 1, 4, 3]));
-console.log(selection([4, 3, 2, 1]));
+
+console.log(insertion([1, 2, 3, 4]));
+console.log(insertion([1, 2, 4, 3]));
+console.log(insertion([2, 1, 4, 3]));
+console.log(insertion([4, 3, 2, 1]));
