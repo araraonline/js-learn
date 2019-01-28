@@ -64,7 +64,7 @@ function insertion(array) {
 }
 
 function mergesort(array) {
-    if (array.length === 1) return array.slice();
+    if (array.length <= 1) return array.slice();
 
     let midpoint = Math.ceil(array.length / 2);
     return merge(
