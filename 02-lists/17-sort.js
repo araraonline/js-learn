@@ -37,6 +37,28 @@ function merge(array1, array2) {
     return merged
 }
 
+function partition(array, start, end) {
+    // reorder array around pivot element (Hoare's)
+    let pivot = array[Math.floor((start + end) / 2)];
+
+    let i = start - 1, j = end + 1;
+    while (true) {
+        do {
+            i++;
+        } while (array[i] < pivot);
+
+        do {
+            j--;
+        } while (array[j] > pivot);
+
+        if (i >= j) {
+            return j;
+        }
+
+        swap(array, i, j);
+    }
+}
+
 function selection(array) {
     array = array.slice();  // use copy
     for (let i = 0; i < array.length - 1; i++) {
@@ -73,8 +95,22 @@ function mergesort(array) {
     );
 }
 
+function quicksort(array) {
+    function _quicksort(array, start, end) {
+        if (start < end) {
+            let pivot = partition(array, start, end);
+            _quicksort(array, start, pivot);
+            _quicksort(array, pivot + 1, end);
+        }
+    }
 
-console.log(mergesort([1, 2, 3, 4]));
-console.log(mergesort([1, 2, 4, 3]));
-console.log(mergesort([2, 1, 4, 3]));
-console.log(mergesort([4, 3, 2, 1]));
+    array = array.slice();
+    _quicksort(array, 0, array.length - 1);
+    return array;
+}
+
+
+console.log(quicksort([1, 2, 3, 4]));
+console.log(quicksort([1, 2, 4, 3]));
+console.log(quicksort([2, 1, 4, 3]));
+console.log(quicksort([4, 3, 2, 1]));
