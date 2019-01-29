@@ -109,6 +109,26 @@ function quicksort(array) {
     return array;
 }
 
+function stooge(array) {
+    function _stooge(array, start, end) {
+        if (array[start] > array[end]) {
+            swap(array, start, end);
+        }
+
+        let size = end - start + 1;
+        if (size > 2) {
+            let twothirds = Math.ceil(2 * size / 3);
+            _stooge(array, start, start + twothirds - 1);
+            _stooge(array, end - twothirds + 1, end);
+            _stooge(array, start, start + twothirds - 1);
+        }
+    }
+
+    array = array.slice();
+    _stooge(array, 0, array.length - 1);
+    return array;
+}
+
 function tests() {
     function check(a, b) {
         if (JSON.stringify(a) !== JSON.stringify(b)) {
@@ -126,7 +146,7 @@ function tests() {
 
         let expected = array.slice().sort((a, b) => a - b);
 
-        for (let sort of [selection, insertion, mergesort, quicksort]) {
+        for (let sort of [selection, insertion, mergesort, quicksort, stooge]) {
             console.log(sort);
             check(sort(array), expected);
         }
