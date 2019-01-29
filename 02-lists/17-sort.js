@@ -109,8 +109,28 @@ function quicksort(array) {
     return array;
 }
 
+function tests() {
+    function check(a, b) {
+        if (JSON.stringify(a) !== JSON.stringify(b)) {
+            throw new Error();
+        }
+    }
 
-console.log(quicksort([1, 2, 3, 4]));
-console.log(quicksort([1, 2, 4, 3]));
-console.log(quicksort([2, 1, 4, 3]));
-console.log(quicksort([4, 3, 2, 1]));
+    for (let n = 0; n <= 100; n++) {
+        console.log(`\nTesting for n = ${n}`);
+
+        let array = [];
+        for (let i = 0; i < n; i++) {
+            array.push(Math.floor(Math.random() * 100) + 1);
+        }
+
+        let expected = array.slice().sort((a, b) => a - b);
+
+        for (let sort of [selection, insertion, mergesort, quicksort]) {
+            console.log(sort);
+            check(sort(array), expected);
+        }
+    }
+}
+
+tests();
