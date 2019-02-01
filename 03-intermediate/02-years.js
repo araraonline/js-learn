@@ -14,3 +14,4 @@ console.log(calculateLeapRule(200.25));
 console.log(calculateLeapRule(200.40));
 console.log(calculateLeapRule(200.42));
 console.log(calculateLeapRule(200.90));
+console.log(calculateLeapRule(200.34));
