@@ -1,3 +1,5 @@
+/* Play a guessing game */
+
 const prompt = require("prompt-sync")();
 
 function playGame() {
