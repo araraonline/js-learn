@@ -1,3 +1,5 @@
+/* Print prime numbers while it finds them */
+
 let foundPrimes = [];
 function isPrime(number) {
     for (let divisor of foundPrimes) {
