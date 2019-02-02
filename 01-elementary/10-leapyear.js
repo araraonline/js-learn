@@ -1,3 +1,5 @@
+/* I will print out the next 20 leap years */
+
 function isDivisible(number, by) {
     return number % by === 0;
 }
