@@ -12,6 +12,7 @@ rl.question("Choose a number: ", number => {
 });
 
 function sumFromTo(from, to) {
+    /* Sum multiples of 3 and/or 5 between from and to (inclusive) */
     let summation = 0;
     for (let n = from; n <= to; n++) {
         if (n % 3 == 0 || n % 5 == 0) {
