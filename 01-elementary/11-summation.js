@@ -1,3 +1,5 @@
+/* I will calculate and print out the result of a mathematical equation */
+
 function summation(recipe, from, to) {
     let sum = 0;
     for (let n = from; n <= to; n++) {
