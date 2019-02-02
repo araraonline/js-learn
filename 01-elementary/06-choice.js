@@ -1,6 +1,18 @@
 let prompt = require("prompt-sync")();
 
 function sum(to) {
+    /*
+     * Return the sum of integers up to 'to'.
+     *
+     * Example:
+     *
+     * >>> sum(1)
+     * 1
+     * >>> sum(2)
+     * 3
+     * >>> sum(3)
+     * 6
+    */
     let summation = 0;
     for (let n = 1; n <= to; n++) {
         summation += n;
@@ -9,6 +21,11 @@ function sum(to) {
 }
 
 function multiply(to) {
+    /*
+     * Return the multiplication of integers up to 'to'.
+     * 
+     * Same as factorial(to).
+    */
     let product = 1;
     for (let n = 1; n <= to; n++) {
         product *= n;
