@@ -8,6 +8,12 @@ function findPalindrome(string) {
 
     // find palindromes of even size
     for (let pos = 0; pos < string.length - 1; pos++) {
+
+        // early stopping
+        if (pos <= size / 2 - 1 || pos >= string.length - size / 2 - 1) {
+            continue;
+        }
+
         let i = pos;
         let j = pos + 1;
         while (string[i] && string[i] === string[j]) {
@@ -23,6 +29,12 @@ function findPalindrome(string) {
 
     // find palindromes of odd size
     for (let pos = 0; pos < string.length - 2; pos++) {
+
+        // early stopping
+        if (pos <= size / 2 - 1.5 || pos >= string.length - size / 2 - 1.5) {
+            continue;
+        }
+
         let i = pos;
         let j = pos + 2;
         while (string[i] && string[i] === string[j]) {
