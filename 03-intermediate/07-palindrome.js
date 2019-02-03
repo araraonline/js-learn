@@ -6,14 +6,46 @@ function findPalindrome(string) {
     // palindrome position and size
     let pos1 = 0, pos2 = 0, size = 1;
 
-    // find palindromes of even size
-    for (let pos = 0; pos < string.length - 1; pos++) {
+    // center of string (lefty on strings of even length)
+    let center;
+    if (string.length % 2 === 0) {
+        center = string.length / 2 - 1;
+    } else {
+        center = (string.length - 1) / 2;
+    }
 
-        // early stopping
-        if (pos <= size / 2 - 1 || pos >= string.length - size / 2 - 1) {
+    // pointer
+    let direction, distance;
+    let stopLeft, stopRight;
+
+    // find palindromes of even size
+    direction = 'right';
+    distance = 0;
+    stopLeft = stopRight = false;
+    while (!(stopLeft && stopRight)) {
+
+        // control the pointer
+        let pos;
+        if (direction === 'right') {
+            pos = center + distance;
+            direction = 'left';
+            distance += 1;
+        } else {
+            pos = center - distance;
+            direction = 'right';
+        }
+
+        // early stop
+        if (pos <= size / 2 - 1) {
+            stopLeft = true;
+            continue;
+        }
+        if (pos >= string.length - size / 2 - 1) {
+            stopRight = true;
             continue;
         }
 
+        // seek substrings
         let i = pos;
         let j = pos + 1;
         while (string[i] && string[i] === string[j]) {
@@ -25,18 +57,39 @@ function findPalindrome(string) {
             i--;
             j++;
         }
+
     }
 
     // find palindromes of odd size
-    for (let pos = 0; pos < string.length - 2; pos++) {
+    direction = 'left';
+    distance = 0;
+    stopLeft = stopRight = false;
+    while (!(stopLeft && stopRight)) {
 
-        // early stopping
-        if (pos <= size / 2 - 1.5 || pos >= string.length - size / 2 - 1.5) {
+        // control the pointer
+        let pos;
+        if (direction === 'left') {
+            pos = center - distance;
+            direction = 'right';
+            distance += 1;
+        } else {
+            pos = center + distance;
+            direction = 'left';
+        }
+
+        // early stop
+        if (pos <= size / 2 - 0.5) {
+            stopLeft = true;
+            continue;
+        }
+        if (pos >= string.length - size / 2 - 0.5) {
+            stopRight = true;
             continue;
         }
 
-        let i = pos;
-        let j = pos + 2;
+        // seek substrings
+        let i = pos - 1;
+        let j = pos + 1;
         while (string[i] && string[i] === string[j]) {
             if (j - i + 1 > size) {
                 pos1 = i;
@@ -46,6 +99,7 @@ function findPalindrome(string) {
             i--;
             j++;
         }
+
     }
 
     return string.slice(pos1, pos2 + 1);
@@ -61,10 +115,10 @@ function tests() {
 
     check(findPalindrome(""), "");
     check(findPalindrome("a"), "a");
-    check(findPalindrome("abacate"), "aba");
-    check(findPalindrome("cateaba"), "aba");
-    check(findPalindrome("abbacate"), "abba");
-    check(findPalindrome("cateabba"), "abba");
+    check(findPalindrome("abacote"), "aba");
+    check(findPalindrome("coteaba"), "aba");
+    check(findPalindrome("abbacote"), "abba");
+    check(findPalindrome("coteabba"), "abba");
 
     let str = "a".repeat(99);
     check(findPalindrome(str), str);
@@ -90,12 +144,21 @@ function performanceTests() {
         return string;
     }
 
-    console.log("Performance checks:");
+    console.log("\nPerformance checks:");
     check(randomString(1e6), "1kk-length random string (26-letter alphabet)");
     check(randomString(1e6, "abc"), "1kk-length random string (3-letter alphabet)");
     check(randomString(1e6, "ab"), "1kk-length random string (2-letter alphabet)");
     check("a".repeat(1000), "1k repeated 'a'");
     check("a".repeat(5000), "5k repeated 'a'");
+
+    let repeated = "a".repeat(5000);
+    let noise = randomString(1e5);
+    console.log("\nRepeated 'a' and noise:");
+    check(repeated + noise, "a + noise");
+    check(noise + repeated, "noise + a");
+    check(noise + repeated + noise, "noise + a + noise");
+    check(repeated + noise + repeated, "a + noise + a");
+    check(noise + repeated + noise + repeated + noise, "noise + a + noise + a + noise");
 }
 
 tests();
