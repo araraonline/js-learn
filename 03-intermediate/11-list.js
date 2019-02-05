@@ -1,6 +1,7 @@
 class List {
-    constructor(size=3) {
+    constructor(size=100) {
         this.root = new EdgeNode(size);
+        this.updateLength();
     }
 
     get(index) {
@@ -13,11 +14,18 @@ class List {
 
     push(value) {
         this.root = this.root.push(value);
+        this.updateLength();
     }
 
     pop() {
         let result = this.root.pop();
+        this.root = result.node;
+        this.updateLength();
         return result.value;
+    }
+
+    updateLength() {
+        this.length = this.root.length;
     }
 }
 
@@ -121,8 +129,46 @@ class ParentNode {
 }
 
 function tests() {
+    function check(a, b) {
+        if (a !== b) {
+            console.log(a, b);
+            throw new Error();
+        }
+    }
+
     let list;
 
+    // push/length/get
+    list = new List(3);
+    for (let i = 0; i < 30; i++) {
+        list.push(i + 1);
+    }
+    check(list.length, 30);
+    for (let i = 0; i < 30; i++) {
+        check(list.get(i), i + 1);
+    }
+
+    // push/pop
+    list = new List(3);
+    for (let i = 0; i < 30; i++) {
+        list.push(i + 1);
+    }
+    for (let i = 29; i >= 0; i--) {
+        check(list.pop(), i + 1);
+    }
+    check(list.length, 0);
+
+    // set
+    list = new List(3);
+    for (let i = 0; i < 30; i++) {
+        list.push(i + 1);
+    }
+    for (let i = 0; i < 30; i++) {
+        list.set(i, i + 2);
+    }
+    for (let i = 0; i < 30; i++) {
+        check(list.get(i), i + 2);
+    }
 
     console.log("tests ok");
 }
