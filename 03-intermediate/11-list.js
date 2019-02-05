@@ -1,12 +1,66 @@
+class List {
+    constructor(size=3) {
+        this.root = new EdgeNode(size);
+    }
+
+    get(index) {
+        return this.root.get(index);
+    }
+
+    set(index, value) {
+        return this.root.set(index, value);
+    }
+
+    push(value) {
+        this.root = this.root.push(value);
+    }
+
+    pop() {
+        let result = this.root.pop();
+        return result.value;
+    }
+}
+
 class EdgeNode {
     constructor(size) {
+        this.array = new Array(size);
+        this.length = 0;
+
+        this.baseSize = size;
+        this.maxSize = size;
+    }
+
+    get(index) {
+        return this.array[index];
+    }
+
+    set(index, value) {
+        this.array[index] = value;
+    }
+
+    push(value) {
+        if (this.length + 1 > this.maxSize) {
+            let parent = new ParentNode(this);
+            parent.push(value);
+            return parent;
+        } else {
+            this.array[this.length] = value;
+            this.length++;
+            return this;
+        }
+    }
+
+    pop() {
+        let value = this.array[this.length - 1];
+        this.length--;
+        return {node: this, value};
     }
 }
 
 class ParentNode {
     constructor(child) {
         // base size used for everything
-        let size = child.size;
+        let size = child.baseSize;
 
         this.children = new Array(size);
         this.children[0] = child;
@@ -65,3 +119,12 @@ class ParentNode {
         }
     }
 }
+
+function tests() {
+    let list;
+
+
+    console.log("tests ok");
+}
+
+tests();
