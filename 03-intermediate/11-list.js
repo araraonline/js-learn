@@ -5,6 +5,7 @@ class List {
     }
 
     get(index) {
+        /* Get value at index */
         if (index < 0 || index >= this.length) {
             throw new Error("invalid index");
         }
@@ -13,6 +14,7 @@ class List {
     }
 
     set(index, value) {
+        /* Set value at index */
         if (index < 0 || index >= this.length) {
             throw new Error("invalid index");
         }
@@ -21,11 +23,13 @@ class List {
     }
 
     push(value) {
+        /* Push value to the end of the list */
         this.root = this.root.push(value);
         this.updateLength();
     }
 
     pop() {
+        /* Pop value at the end of the list, removing it */
         if (this.length === 0) {
             throw new Error("empty list");
         }
