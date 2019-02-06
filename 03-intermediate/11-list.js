@@ -5,10 +5,18 @@ class List {
     }
 
     get(index) {
+        if (index < 0 || index >= this.length) {
+            throw new Error("invalid index");
+        }
+
         return this.root.get(index);
     }
 
     set(index, value) {
+        if (index < 0 || index >= this.length) {
+            throw new Error("invalid index");
+        }
+
         return this.root.set(index, value);
     }
 
@@ -18,6 +26,10 @@ class List {
     }
 
     pop() {
+        if (this.length === 0) {
+            throw new Error("empty list");
+        }
+
         let result = this.root.pop();
         this.root = result.node;
         this.updateLength();
@@ -135,6 +147,15 @@ function tests() {
             throw new Error();
         }
     }
+    
+    function checkError(f) {
+        try {
+            f();
+        } catch(e) {
+            return;
+        }
+        throw new Error();
+    }
 
     let list;
 
@@ -169,6 +190,30 @@ function tests() {
     for (let i = 0; i < 30; i++) {
         check(list.get(i), i + 2);
     }
+
+    // bad get
+    list = new List(3);
+    for (let i = 0; i < 30; i++) {
+        list.push(i + 1);
+    }
+    checkError(() => list.get(-2));
+    checkError(() => list.get(-1));
+    checkError(() => list.get(30));
+    checkError(() => list.get(31));
+
+    // bad set
+    list = new List(3);
+    for (let i = 0; i < 30; i++) {
+        list.push(i + 1);
+    }
+    checkError(() => list.set(-2, 1));
+    checkError(() => list.set(-1, 1));
+    checkError(() => list.set(30, 1));
+    checkError(() => list.set(31, 1));
+
+    // bad pop
+    list = new List(3);
+    checkError(() => list.pop());
 
     console.log("tests ok");
 }
