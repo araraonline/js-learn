@@ -27,6 +27,48 @@ class PriorityQueue {
     }
 
     pop() {
+        /* Pop item of top priority (at the top of the tree) */
+        
+        let length = this.length();
+        if (!length) return;
+
+        let first = this.array[0];
+        let last = this.array[length - 1];
+        this.array[0] = last;
+        this.array[length - 1] = first;
+        let value = this.array.pop();
+
+        let i = 0;
+        while (2 * i + 1 <= length - 2) {
+            let left = 2 * i + 1;
+            let right = 2 * i + 2;
+
+            if (this.array[left] >= this.array[right] || this.array[right] === undefined) {
+                if (this.array[i] < this.array[left]) {
+                    let parent = this.array[i];
+                    let child = this.array[left];
+                    this.array[i] = child;
+                    this.array[left] = parent;
+
+                    i = left;
+                } else {
+                    break;
+                }
+            } else {
+                if (this.array[i] < this.array[right]) {
+                    let parent = this.array[i];
+                    let child = this.array[right];
+                    this.array[i] = child;
+                    this.array[right] = parent;
+
+                    i = right;
+                } else {
+                    break;
+                }
+            } // if/else
+        } // while
+
+        return value;
     }
 
     length() {
@@ -44,3 +86,14 @@ queue.push(3);
 queue.push(47);
 queue.push(100);
 console.log(queue);
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
