@@ -215,48 +215,68 @@ class PointerPriorityQueue {
 }
 
 
-// Basic tests
+function heapsort1(array) {
+    /* Heap sort using the PriorityQueue */
+    /* Items are sorted biggest to lowest */
 
-queue = new PriorityQueue();
-queue.push(20);
-queue.push(2);
-queue.push(2);
-queue.push(1);
-queue.push(20);
-queue.push(3);
-queue.push(47);
-queue.push(100);
-console.log(queue);
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
+    let queue = new PriorityQueue();
 
-queue = new PointerPriorityQueue();
-queue.push(20);
-queue.push(2);
-queue.push(2);
-queue.push(1);
-queue.push(20);
-queue.push(3);
-queue.push(47);
-queue.push(100);
-console.log(queue);
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
-console.log(queue.pop());
+    for (let element of array) {
+        queue.push(element);
+    }
+
+    let result = [];
+    while (queue.length()) {
+        result.push(queue.pop());
+    }
+
+    return result;
+}
+
+
+function heapsort2(array) {
+    /* Heap sort using the PointerPriorityQueue */
+    /* Items are sorted biggest to lowest */
+
+    let queue = new PointerPriorityQueue();
+
+    for (let element of array) {
+        queue.push(element);
+    }
+
+    let result = [];
+    while (queue.length) {
+        result.push(queue.pop());
+    }
+
+    return result;
+}
+
+
+function sortTests() {
+    function check(a, b) {
+        if (JSON.stringify(a) !== JSON.stringify(b)) {
+            console.log(a, b);
+            throw new Error();
+        }
+    }
+
+    for (let n = 0; n <= 100; n++) {
+        console.log(`\nTesting for n = ${n}`);
+
+        let array = [];
+        for (let i = 0; i < n; i++) {
+            array.push(Math.floor(Math.random() * 100) + 1);
+        }
+
+        let expected = array.slice().sort((a, b) => b - a);
+
+        for (let sort of [heapsort1, heapsort2]) {
+            console.log(sort);
+            check(sort(array), expected);
+        }
+    }
+}
+
+
+sortTests();
