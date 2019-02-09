@@ -89,6 +89,8 @@ class PointerPriorityQueue {
     }
 
     push(value) {
+        /* Push an item to the priority queue */
+
         if (!this.root) {
             this.root = {
                 value,
@@ -131,6 +133,57 @@ class PointerPriorityQueue {
         }
     }
 
+    pop() {
+        /* Pop item of top priority (at the top of the tree) */
+        
+        if (!this.root) {
+            return undefined
+        };
+
+        if (this.length === 1) {
+            let result = this.root.value;
+            this.root = null;
+            this.length = 0;
+            return result;
+        }
+
+        let result = this.root.value;
+
+        // swap first and last node values
+        let lastNode = this._findNode(this.length - 1);
+        this._swapValue(this.root, lastNode);
+
+        // remove last node
+        if ((this.length - 1) % 2 === 0) {
+            lastNode.parent.rightChild = null;
+        } else {
+            lastNode.parent.leftChild = null;
+        }
+        this.length -= 1;
+
+        // move element down until it fits
+        let node = this.root;
+        while (node.leftChild) {
+            if (!node.rightChild || node.leftChild.value >= node.rightChild.value) {
+                if (node.value < node.leftChild.value) {
+                    this._swapValue(node, node.leftChild);
+                    node = node.leftChild;
+                } else {
+                    break;
+                }
+            } else {
+                if (node.value < node.rightChild.value) {
+                    this._swapValue(node, node.rightChild);
+                    node = node.rightChild;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
     _findNode(index) {
         let path = [];
         while (index > 0) {
@@ -152,6 +205,8 @@ class PointerPriorityQueue {
     }
 
     _swapValue(a, b) {
+        /* Swap value of two nodes */
+
         let value = a.value;
         a.value = b.value;
         b.value = value;
@@ -194,3 +249,14 @@ queue.push(3);
 queue.push(47);
 queue.push(100);
 console.log(queue);
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
+console.log(queue.pop());
