@@ -4,6 +4,9 @@
  * - Pointer based binary-tree
  * */
 
+
+// Array based implementation
+
 class PriorityQueue {
     constructor() {
         this.array = [];
@@ -76,6 +79,89 @@ class PriorityQueue {
     }
 }
 
+
+// Pointer based implementation
+
+class PointerPriorityQueue {
+    constructor() {
+        this.root = null;
+        this.length = 0;
+    }
+
+    push(value) {
+        if (!this.root) {
+            this.root = {
+                value,
+                parent: null,
+                leftChild: null,
+                rightChild: null
+            };
+            this.length = 1;
+            return;
+        }
+
+        // add element to bottom
+        let index = this.length;
+        let node;
+        if (index % 2 === 0) {
+            let parent = this._findNode((index - 2) / 2);
+            node = parent.rightChild = {
+                value,
+                parent,
+                leftChild: null,
+                rightChild: null
+            };
+            this.length += 1;
+        } else {
+            let parent = this._findNode((index - 1) / 2);
+            node = parent.leftChild = {
+                value,
+                parent,
+                leftChild: null,
+                rightChild: null
+            }
+            this.length += 1;
+        }
+
+        // move element up until it fits
+        while (node.parent &&
+               node.value > node.parent.value) {
+            this._swapValue(node, node.parent);
+            node = node.parent;
+        }
+    }
+
+    _findNode(index) {
+        let path = [];
+        while (index > 0) {
+            if (index % 2 === 1) {
+                path.push("leftChild");
+                index = (index - 1) / 2;
+            } else {
+                path.push("rightChild");
+                index = (index - 2) / 2;
+            }
+        }
+
+        let node = this.root;
+        while (path.length) {
+            node = node[path.pop()];
+        }
+
+        return node;
+    }
+
+    _swapValue(a, b) {
+        let value = a.value;
+        a.value = b.value;
+        b.value = value;
+    }
+}
+
+
+// Basic tests
+
+
 queue = new PriorityQueue();
 queue.push(20);
 queue.push(2);
@@ -97,3 +183,14 @@ console.log(queue.pop());
 console.log(queue.pop());
 console.log(queue.pop());
 console.log(queue.pop());
+
+queue = new PointerPriorityQueue();
+queue.push(20);
+queue.push(2);
+queue.push(2);
+queue.push(1);
+queue.push(20);
+queue.push(3);
+queue.push(47);
+queue.push(100);
+console.log(queue);
