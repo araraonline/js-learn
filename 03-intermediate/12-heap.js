@@ -185,6 +185,7 @@ class PointerPriorityQueue {
     }
 
     _findNode(index) {
+        /* Find a node given an index */
         let path = [];
         while (index > 0) {
             if (index % 2 === 1) {
@@ -215,7 +216,6 @@ class PointerPriorityQueue {
 
 
 // Basic tests
-
 
 queue = new PriorityQueue();
 queue.push(20);
