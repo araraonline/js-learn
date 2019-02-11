@@ -29,11 +29,11 @@ class LeafNode {
         for (let i = 0; i < this.keys.length; i++) {
             if (key === this.keys[i]) {
                 this.values[i] = value;
-                return this;
+                return this.tree.root;
             } else if (key < this.keys[i]) {
                 this.keys = this.keys.slice(0, i).concat([key]).concat(this.keys.slice(i));
                 this.values = this.values.slice(0, i).concat([value]).concat(this.values.slice(i));
-                return this._overflow()
+                return this._overflow();
             }
         }
 
@@ -58,7 +58,7 @@ class LeafNode {
             right.keys = this.keys.slice(midpoint);
             right.values = this.values.slice(midpoint);
 
-            if (!parent) {
+            if (!this.parent) {
                 this.parent = new ParentNode(this.tree);
                 this.parent.array = [left, middle.key, right];
                 this.parent.values = [middle.value];
@@ -67,6 +67,8 @@ class LeafNode {
 
             return this.parent._forcePush(left, middle, right);
         }
+
+        return this.tree.root;
     }
 }
 
