@@ -61,7 +61,7 @@ class LeafNode {
             if (!parent) {
                 this.parent = new ParentNode(this.tree);
                 this.parent.array = [left, middle.key, right];
-                this.parent.values = middle.value;
+                this.parent.values = [middle.value];
                 return this.parent;
             }
 
