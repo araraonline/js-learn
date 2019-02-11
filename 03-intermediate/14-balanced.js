@@ -72,10 +72,9 @@ class LeafNode {
             right.values = this.values.slice(midpoint + 1);
 
             if (!this.parent) {
-                this.parent = new ParentNode(this.tree);
-                this.parent.array = [left, middle.key, right];
-                this.parent.values = [middle.value];
-                return this.parent;
+                let root = new ParentNode(this.tree);
+                root._forcePush(left, middle, right);
+                return root;
             }
 
             return this.parent._forcePush(left, middle, right);
@@ -110,32 +109,36 @@ class ParentNode {
         if ((this.array.length - 1) / 2 + 1 > this.tree.b) {
             let midpoint = 2 * Math.ceil((this.array.length - 3) / 4) + 1;
             let valuesMidpoint = (midpoint - 1) / 2;
+            let left, middle, right;
+
+            left = new ParentNode(this.tree);
+            left.array = this.array.slice(0, midpoint);
+            left.values = this.values.slice(0, valuesMidpoint);
+
+            middle = {key: this.array[midpoint], value: this.values[valuesMidpoint]};
+
+            right = new ParentNode(this.tree);
+            right.array = this.array.slice(midpoint);
+            right.values = this.values.slice(valuesMidpoint);
+
+            if (!this.parent) {
+                let root = new ParentNode(this.tree);
+                root._forcePush(left, middle, right);
+                return root;
+            }
+
+            return this.parent._forcePush(left, middle, right);
         }
 
-        let left, middle, right;
-
-        left = new ParentNode(this.tree);
-        left.array = this.array.slice(0, midpoint);
-        left.values = this.values.slice(0, valuesMidpoint);
-
-        middle = {key: this.array[midpoint], value: this.values[valuesMidpoint]};
-
-        right = new ParentNode(this.tree);
-        right.array = this.array.slice(midpoint);
-        right.values = this.values.slice(valuesMidpoint);
-
-        if (!this.parent) {
-            this.parent = new ParentNode(this.tree);
-            this.parent.array = [left, middle.key, right];
-            this.parent.values = [middle.value];
-            return this.parent;
-        }
-
-        return this.parent._forcePush(left, middle, right);
+        return this.tree.root;
     }
 
     _forcePush(left, middle, right) {
         let {key, value} = middle;
+
+        left.parent = this;
+        right.parent = this;
+
         for (let i = 1; i < this.array.length; i++) {
             if (key < this.array[i]) {
                 this.array = this.array.slice(0, i + 1)
@@ -157,5 +160,3 @@ class ParentNode {
 exports.LeafNode = LeafNode;
 exports.ParentNode = ParentNode;
 exports.ABSearchTree = ABSearchTree;
-
-// TODO: set parents on _overflow's
