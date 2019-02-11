@@ -4,14 +4,11 @@ function assert(bool, message="") {
     }
 }
 
-class ABSearchTree {
-    /* Represents an (a,b)-tree */
+class BTree {
+    /* Represents an B-tree */
 
-    constructor(a, b) {
-        assert(a >= 2, "a must be greater than or equal to 2");
-        assert(a <= (b + 1) / 2, "a must be lower than or equal to (b + 1) / 2");
-
-        this.a = a; // minimum amount of children
+    constructor(b) {
+        assert(b >= 3, "b must be greater than or equal to 3");
         this.b = b; // maximum amount of children
         this.root = null;
     }
@@ -204,27 +201,27 @@ function tests() {
     let tree;
 
     // ascendent push
-    tree = new ABSearchTree(2, 3);
-    for (let i = 1; i <= 10; i++) {
+    tree = new BTree(3);
+    for (let i = 1; i <= 100; i++) {
         tree.push(i, i * 10);
     }
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 100; i++) {
         check(tree.get(i), i * 10);
     }
 
     // descendent push
-    tree = new ABSearchTree(2, 3);
-    for (let i = 10; i >= 1; i--) {
+    tree = new BTree(3);
+    for (let i = 100; i >= 1; i--) {
         tree.push(i, i * 10);
     }
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 100; i >= 1; i--) {
         check(tree.get(i), i * 10);
     }
 
     // random push (2, 3)
     let items, random;
     items = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 100; i++) {
         items.push(i);
     }
     random = [];
@@ -233,7 +230,7 @@ function tests() {
         random.push(items[i]);
         items = items.slice(0, i).concat(items.slice(i + 1));
     }
-    tree = new ABSearchTree(2, 3);
+    tree = new BTree(3);
     for (let i of random) {
         tree.push(i, i * 10);
     }
@@ -252,7 +249,7 @@ function tests() {
         random.push(items[i]);
         items = items.slice(0, i).concat(items.slice(i + 1));
     }
-    tree = new ABSearchTree(2, 4);
+    tree = new BTree(4);
     for (let i of random) {
         tree.push(i, i * 10);
     }
@@ -261,32 +258,32 @@ function tests() {
     }
 
     // replace
-    tree = new ABSearchTree(2, 3);
-    for (let i = 10; i >= 1; i--) {
+    tree = new BTree(3);
+    for (let i = 1; i <= 100; i++) {
         tree.push(i, i * 10);
     }
-    for (let i = 10; i >= 1; i--) {
+    for (let i = 1; i <= 100; i++) {
         tree.push(i, i * 100);
     }
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 100; i++) {
         check(tree.get(i), i * 100);
     }
 
     // delete
-    tree = new ABSearchTree(2, 3);
-    for (let i = 10; i >= 1; i--) {
+    tree = new BTree(3);
+    for (let i = 1; i <= 100; i++) {
         tree.push(i, i * 10);
     }
-    for (let i = 10; i >= 1; i--) {
+    for (let i = 1; i <= 100; i++) {
         tree.delete(i);
     }
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 100; i++) {
         check(tree.get(i), undefined);
     }
 
     // bad get
-    tree = new ABSearchTree(2, 3);
-    for (let i = 1; i <= 10; i++) {
+    tree = new BTree(3);
+    for (let i = 1; i <= 100; i++) {
         check(tree.get(i), undefined);
     }
 
