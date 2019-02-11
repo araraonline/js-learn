@@ -15,6 +15,19 @@ class ABSearchTree {
         this.b = b; // maximum amount of children
         this.root = null;
     }
+
+    push(key, value) {
+        /* Add a key-value pair to the tree */
+
+        if (!this.root) {
+            this.root = new LeafNode(this);
+            this.root = this.root.push(key, value);
+            return value;
+        }
+
+        this.root = this.root.push(key, value);
+        return value;
+    }
 }
 
 class LeafNode {
