@@ -28,6 +28,15 @@ class ABSearchTree {
         this.root = this.root.push(key, value);
         return value;
     }
+
+    get(key) {
+        /* Return the value associated with a key */
+
+        if (!this.root) {
+            return undefined;
+        }
+        return this.root.get(key);
+    }
 }
 
 class LeafNode {
