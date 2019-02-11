@@ -118,8 +118,8 @@ class ParentNode {
             middle = {key: this.array[midpoint], value: this.values[valuesMidpoint]};
 
             right = new ParentNode(this.tree);
-            right.array = this.array.slice(midpoint);
-            right.values = this.values.slice(valuesMidpoint);
+            right.array = this.array.slice(midpoint + 1);
+            right.values = this.values.slice(valuesMidpoint + 1);
 
             if (!this.parent) {
                 let root = new ParentNode(this.tree);
