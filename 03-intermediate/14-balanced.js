@@ -68,8 +68,8 @@ class LeafNode {
             middle = {key: this.keys[midpoint], value: this.values[midpoint]};
 
             right = new LeafNode(this.tree);
-            right.keys = this.keys.slice(midpoint);
-            right.values = this.values.slice(midpoint);
+            right.keys = this.keys.slice(midpoint + 1);
+            right.values = this.values.slice(midpoint + 1);
 
             if (!this.parent) {
                 this.parent = new ParentNode(this.tree);
