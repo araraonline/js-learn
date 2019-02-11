@@ -118,7 +118,7 @@ class ParentNode {
     }
 
     push(key, value) {
-        for (let i = 1; i < this.array.values; i += 2) {
+        for (let i = 1; i < this.array.length; i += 2) {
             if (key === this.array[i]) {
                 this.values[(i - 1) / 2] = value;
                 return this.tree.root;
@@ -175,11 +175,11 @@ class ParentNode {
         left.parent = this;
         right.parent = this;
 
-        for (let i = 1; i < this.array.length; i++) {
+        for (let i = 1; i < this.array.length; i += 2) {
             if (key < this.array[i]) {
-                this.array = this.array.slice(0, i + 1)
+                this.array = this.array.slice(0, i - 1)
                     .concat([left, middle.key, right])
-                    .concat(this.array.slice(i + 2));
+                    .concat(this.array.slice(i));
                 this.values = this.values.slice(0, (i - 1) / 2)
                     .concat(middle.value)
                     .concat(this.values.slice((i - 1) / 2));
@@ -193,6 +193,104 @@ class ParentNode {
     }
 }
 
-exports.LeafNode = LeafNode;
-exports.ParentNode = ParentNode;
-exports.ABSearchTree = ABSearchTree;
+function tests() {
+    function check(a, b) {
+        if (a !== b) {
+            console.log(a, b);
+            throw new Error();
+        }
+    }
+
+    let tree;
+
+    // ascendent push
+    tree = new ABSearchTree(2, 3);
+    for (let i = 1; i <= 10; i++) {
+        tree.push(i, i * 10);
+    }
+    for (let i = 1; i <= 10; i++) {
+        check(tree.get(i), i * 10);
+    }
+
+    // descendent push
+    tree = new ABSearchTree(2, 3);
+    for (let i = 10; i >= 1; i--) {
+        tree.push(i, i * 10);
+    }
+    for (let i = 1; i <= 10; i++) {
+        check(tree.get(i), i * 10);
+    }
+
+    // random push (2, 3)
+    let items, random;
+    items = [];
+    for (let i = 1; i <= 10; i++) {
+        items.push(i);
+    }
+    random = [];
+    while (items.length) {
+        let i = Math.floor(Math.random() * items.length);
+        random.push(items[i]);
+        items = items.slice(0, i).concat(items.slice(i + 1));
+    }
+    tree = new ABSearchTree(2, 3);
+    for (let i of random) {
+        tree.push(i, i * 10);
+    }
+    for (let i of random) {
+        check(tree.get(i), i * 10);
+    }
+
+    // random push (2, 4)
+    items = [];
+    for (let i = 1; i <= 100; i++) {
+        items.push(i);
+    }
+    random = [];
+    while (items.length) {
+        let i = Math.floor(Math.random() * items.length);
+        random.push(items[i]);
+        items = items.slice(0, i).concat(items.slice(i + 1));
+    }
+    tree = new ABSearchTree(2, 4);
+    for (let i of random) {
+        tree.push(i, i * 10);
+    }
+    for (let i of random) {
+        check(tree.get(i), i * 10);
+    }
+
+    // replace
+    tree = new ABSearchTree(2, 3);
+    for (let i = 10; i >= 1; i--) {
+        tree.push(i, i * 10);
+    }
+    for (let i = 10; i >= 1; i--) {
+        tree.push(i, i * 100);
+    }
+    for (let i = 1; i <= 10; i++) {
+        check(tree.get(i), i * 100);
+    }
+
+    // delete
+    tree = new ABSearchTree(2, 3);
+    for (let i = 10; i >= 1; i--) {
+        tree.push(i, i * 10);
+    }
+    for (let i = 10; i >= 1; i--) {
+        tree.delete(i);
+    }
+    for (let i = 1; i <= 10; i++) {
+        check(tree.get(i), undefined);
+    }
+
+    // bad get
+    tree = new ABSearchTree(2, 3);
+    for (let i = 1; i <= 10; i++) {
+        check(tree.get(i), undefined);
+    }
+
+    console.log("tests ok");
+}
+
+tests();
