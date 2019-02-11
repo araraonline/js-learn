@@ -37,6 +37,12 @@ class ABSearchTree {
         }
         return this.root.get(key);
     }
+
+    delete(key) {
+        /* Delete the value associated with a key (does not change the structure of the tree) */
+
+        return this.push(key, undefined);
+    }
 }
 
 class LeafNode {
@@ -62,6 +68,16 @@ class LeafNode {
         this.keys.push(key);
         this.values.push(value);
         return this._overflow();
+    }
+
+    get(key) {
+        for (let i = 0; i < this.keys.length; i++) {
+            if (key === this.keys[i]) {
+                return this.values[i];
+            }
+        }
+        
+        return undefined;
     }
 
     _overflow() {
@@ -112,6 +128,17 @@ class ParentNode {
         }
 
         return this.array[this.array.length - 1].push(key, value);
+    }
+
+    get(key) {
+        for (let i = 1; i < this.array.length; i++) {
+            if (key === this.array[i]) {
+                return this.values[(i - 1) / 2];
+            } else if (key < this.array[i]) {
+                return this.array[i - 1].get(key);
+            }
+        }
+        return this.array[this.array.length - 1].get(key);
     }
 
     _overflow() {
