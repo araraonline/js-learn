@@ -69,6 +69,99 @@ class State {
 
 }
 
-exports.shuffle = shuffle;
-exports.randomBoard = randomBoard;
-exports.State = State;
+class DOMDisplay {
+    constructor() {
+        this.dom = document.createElement("div");
+        this.attach();
+    }
+
+    draw(state) {
+        this.reset();
+        this._drawBoard(state);
+        this._drawInformation(state);
+        this._drawGameOver(state);
+    }
+
+    attach() {
+        document.body.appendChild(this.dom);
+    }
+
+    reset() {
+        this.dom.innerHTML = "";
+    }
+
+    _drawBoard(state) {
+        let board = document.createElement("board");
+
+        let cards = [];
+        for (let i = 0; i < state.board.length; i++) {
+            let card = document.createElement("card");
+            card.dataset.index = i;
+            if (state.board[i] === "") {
+                card.classList = ["hidden"];
+            } else if (state.up.includes(i)) {
+                card.classList = ["up"];
+                card.textContent = state.board[i];
+            } else {
+                card.classList = ["down"];
+                card.addEventListener("click", function() {
+                    state.turnUp(i);
+                    display.draw(state);
+                    if (state.up.length === 2) {
+                        setTimeout(function() {
+                            state.checkUp();
+                            display.draw(state);
+                        }, 1000);
+                    }
+                });
+            }
+            cards.push(card);
+        }
+
+        cards.forEach(c => board.appendChild(c));
+        this.dom.appendChild(board);
+    }
+
+    _drawInformation(state) {
+        let information = document.createElement("information");
+        
+        if (!state.gameover) {
+            let turn = document.createElement("p");
+            turn.textContent = `Turn: Player ${state.turn}`;
+            information.appendChild(turn);
+
+            let score = document.createElement("p");
+            score.textContent += `Player A: ${state.score.A}`;
+            score.textContent += ` Player B: ${state.score.B}`;
+            information.appendChild(score);
+        } else {
+            let score = document.createElement("p");
+            score.textContent += `Player A: ${state.score.A}`;
+            score.textContent += ` Player B: ${state.score.B}`;
+            information.appendChild(score);
+
+            let gameover = document.createElement("p");
+            gameover.textContent = "Game over!";
+            information.appendChild(gameover);
+        }
+
+        this.dom.appendChild(information);
+    }
+
+    _drawGameOver(state) {
+        if (state.gameover) {
+            this.dom.firstChild.style.display = "none";
+            let button = document.createElement("button");
+            button.textContent = "New game";
+            button.addEventListener("click", function() {
+                state.newGame();
+                display.draw(state);
+            });
+            this.dom.appendChild(button);
+        }
+    }
+}
+
+let state = new State();
+let display = new DOMDisplay();
+display.draw(state);

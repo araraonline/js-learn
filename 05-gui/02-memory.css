@@ -1,0 +1,46 @@
+body {
+    margin: 20px;
+}
+
+board {
+    display: block;
+    position: relative;
+}
+
+information {
+    display: block;
+    position: relative;
+    top: 20px;
+    left: 10px;
+    clear: left;
+}
+
+card {
+    display: block;
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+
+    box-sizing: border-box;
+    border: 1px solid black;
+
+    background: #DDD;
+}
+
+card.hidden {
+    visibility: hidden;
+}
+
+card.up {
+    background: white;
+    color: black;
+    text-align: center;
+    line-height: 100px;
+}
+
+button {
+    position: relative;
+    top: 20px;
+    left: 10px;
+}
