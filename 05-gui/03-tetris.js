@@ -18,54 +18,11 @@
  *
  *  TODO:
  *
- *  - Improve code structure
  *  - Improve visuals
  */
 
 
-const CONFIG = {
-    width: 10,
-    height: 24,
-    scale: 30,
-    fps: 60,
-}
-const PIXEL_WIDTH = CONFIG.width * CONFIG.scale;
-const PIXEL_HEIGHT = CONFIG.height * CONFIG.scale;
-
-let body = document.body;
-let canvas = document.querySelector("canvas");
-canvas.width = PIXEL_WIDTH;
-canvas.height = PIXEL_HEIGHT;
-
-titleScreen();
-
-
-class Vector {
-    /* Represents a 2d vector */
-
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    add(other) {
-        return new Vector(
-            this.x + other.x,
-            this.y + other.y
-        );
-    }
-
-    equals(other) {
-        return (this.x === other.x) && (this.y === other.y);
-    }
-}
-
-function randomItem(list) {
-    /* Retrieve a random item from list */
-
-    return list[Math.floor(Math.random() * list.length)];
-}
-
+/* Screens */
 
 function titleScreen() {
     /* Presents the title screen */
@@ -133,6 +90,9 @@ function gameScreen() {
      *  |                                                                                     |
      *  +-------------------------------------------------------------------------------------+
      */
+
+
+    /* Classes */
 
     class State {
         /* Represents the current game state */
@@ -294,6 +254,41 @@ function gameScreen() {
         }
     }
 
+    Piece.SHAPES = [
+        // square
+        [[new Vector(-1, +1), new Vector(+0, +1), new Vector(-1, +0), new Vector(+0, +0)]],
+
+        // long
+        [[new Vector(-2, +0), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
+         [new Vector(+0, +2), new Vector(+0, +1), new Vector(+0, +0), new Vector(+0, -1)]],
+
+        // right stairs
+        [[new Vector(+0, +1), new Vector(+1, +1), new Vector(-1, +0), new Vector(+0, +0)],
+         [new Vector(+0, +1), new Vector(+0, +0), new Vector(+1, +0), new Vector(+1, -1)]],
+
+        // left stairs
+        [[new Vector(-1, +1), new Vector(+0, +1), new Vector(+0, +0), new Vector(+1, +0)],
+         [new Vector(+1, +1), new Vector(+1, +0), new Vector(+0, +0), new Vector(+0, -1)]],
+
+        // triangle
+        [[new Vector(+0, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
+         [new Vector(+0, +1), new Vector(+0, +0), new Vector(+1, +0), new Vector(+0, -1)],
+         [new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0), new Vector(+0, -1)],
+         [new Vector(+0, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+0, -1)]],
+
+        // right bed
+        [[new Vector(-1, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
+         [new Vector(+0, +1), new Vector(+1, +1), new Vector(+0, +0), new Vector(+0, -1)],
+         [new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0), new Vector(+1, -1)],
+         [new Vector(+0, +1), new Vector(+0, +0), new Vector(-1, -1), new Vector(+0, -1)]],
+
+        // left bed
+        [[new Vector(+1, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
+         [new Vector(+0, +1), new Vector(+0, +0), new Vector(+0, -1), new Vector(+1, -1)],
+         [new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0), new Vector(-1, -1)],
+         [new Vector(-1, +1), new Vector(+0, +1), new Vector(+0, +0), new Vector(+0, -1)]],
+    ]
+
     class Pile {
         constructor(blocks) {
             this.blocks = blocks || [];
@@ -370,95 +365,8 @@ function gameScreen() {
         }
     }
 
-    Piece.SHAPES = [
-        // square
-        [[new Vector(-1, +1), new Vector(+0, +1), new Vector(-1, +0), new Vector(+0, +0)]],
 
-        // long
-        [[new Vector(-2, +0), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
-         [new Vector(+0, +2), new Vector(+0, +1), new Vector(+0, +0), new Vector(+0, -1)]],
-
-        // right stairs
-        [[new Vector(+0, +1), new Vector(+1, +1), new Vector(-1, +0), new Vector(+0, +0)],
-         [new Vector(+0, +1), new Vector(+0, +0), new Vector(+1, +0), new Vector(+1, -1)]],
-
-        // left stairs
-        [[new Vector(-1, +1), new Vector(+0, +1), new Vector(+0, +0), new Vector(+1, +0)],
-         [new Vector(+1, +1), new Vector(+1, +0), new Vector(+0, +0), new Vector(+0, -1)]],
-
-        // triangle
-        [[new Vector(+0, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
-         [new Vector(+0, +1), new Vector(+0, +0), new Vector(+1, +0), new Vector(+0, -1)],
-         [new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0), new Vector(+0, -1)],
-         [new Vector(+0, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+0, -1)]],
-
-        // right bed
-        [[new Vector(-1, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
-         [new Vector(+0, +1), new Vector(+1, +1), new Vector(+0, +0), new Vector(+0, -1)],
-         [new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0), new Vector(+1, -1)],
-         [new Vector(+0, +1), new Vector(+0, +0), new Vector(-1, -1), new Vector(+0, -1)]],
-
-        // left bed
-        [[new Vector(+1, +1), new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0)],
-         [new Vector(+0, +1), new Vector(+0, +0), new Vector(+0, -1), new Vector(+1, -1)],
-         [new Vector(-1, +0), new Vector(+0, +0), new Vector(+1, +0), new Vector(-1, -1)],
-         [new Vector(-1, +1), new Vector(+0, +1), new Vector(+0, +0), new Vector(+0, -1)]],
-    ]
-
-    let paused = false;
-    let controller = {
-        pause: false,
-        left: false,
-        right: false,
-        up: false,
-        down: false
-    };
-    let state = new State();
-    let view = new View();
-
-    requestAnimationFrame(loop);
-
-
-    // connect user input to the passive controller
-    function receiveKeydown(event) {
-        if (!paused) {
-            console.log(event.key);
-            if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                controller.up = true;
-            } else if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                controller.down = true;
-            } else if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                controller.left = true;
-            } else if (event.key === 'ArrowRight') {
-                event.preventDefault();
-                controller.right = true;
-            }
-        }
-    }
-    function receiveKeyup(event) {
-        if (paused && event.key === 'p') {
-            // resume the animation
-            event.preventDefault();
-            paused = false;
-            requestAnimationFrame(loop);
-        } else if (!paused) {
-            if (event.key === 'p') {
-                event.preventDefault();
-                controller.pause = true;
-            } else if (event.key === 'ArrowDown') {
-                // release speed key
-                event.preventDefault();
-                controller.down = false;
-            }
-        }
-    }
-    body.addEventListener('keydown', receiveKeydown);
-    body.addEventListener('keyup', receiveKeyup);
-
-    // functions/classes
+    /* Functions */
 
     function loop() {
         if (controller.pause) {
@@ -485,6 +393,61 @@ function gameScreen() {
         gameoverScreen();
     }
 
+    function receiveKeydown(event) {
+        if (!paused) {
+            console.log(event.key);
+            if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                controller.up = true;
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                controller.down = true;
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                controller.left = true;
+            } else if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                controller.right = true;
+            }
+        }
+    }
+
+    function receiveKeyup(event) {
+        if (paused && event.key === 'p') {
+            // resume the animation
+            event.preventDefault();
+            paused = false;
+            requestAnimationFrame(loop);
+        } else if (!paused) {
+            if (event.key === 'p') {
+                event.preventDefault();
+                controller.pause = true;
+            } else if (event.key === 'ArrowDown') {
+                // release speed key
+                event.preventDefault();
+                controller.down = false;
+            }
+        }
+    }
+
+
+    /* Initialization code */
+
+    let paused = false;
+    let controller = {
+        pause: false,
+        left: false,
+        right: false,
+        up: false,
+        down: false
+    };
+    let state = new State();
+    let view = new View();
+
+    body.addEventListener('keydown', receiveKeydown);
+    body.addEventListener('keyup', receiveKeyup);
+
+    requestAnimationFrame(loop);
 }
 
 
@@ -517,3 +480,51 @@ function gameoverScreen() {
         gameScreen();
     }
 }
+
+
+/* Utils */
+
+class Vector {
+    /* Represents a 2d vector */
+
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    add(other) {
+        return new Vector(
+            this.x + other.x,
+            this.y + other.y
+        );
+    }
+
+    equals(other) {
+        return (this.x === other.x) && (this.y === other.y);
+    }
+}
+
+function randomItem(list) {
+    /* Retrieve a random item from list */
+
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+
+/* Initialization code */
+
+const CONFIG = {
+    width: 10,
+    height: 24,
+    scale: 30,
+    fps: 60,
+}
+const PIXEL_WIDTH = CONFIG.width * CONFIG.scale;
+const PIXEL_HEIGHT = CONFIG.height * CONFIG.scale;
+
+let body = document.body;
+let canvas = document.querySelector("canvas");
+canvas.width = PIXEL_WIDTH;
+canvas.height = PIXEL_HEIGHT;
+
+titleScreen();
