@@ -18,7 +18,6 @@
  *
  *  TODO:
  *
- *  - Improve left/right controllers
  *  - Improve code structure
  *  - Improve visuals
  */
@@ -422,14 +421,27 @@ function gameScreen() {
 
     // connect user input to the passive controller
     function receiveKeydown(event) {
-        if (!paused && event.key === 'ArrowDown') {
-            event.preventDefault();
-            controller.down = true;
+        if (!paused) {
+            console.log(event.key);
+            if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                controller.up = true;
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                controller.down = true;
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                controller.left = true;
+            } else if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                controller.right = true;
+            }
         }
     }
     function receiveKeyup(event) {
         if (paused && event.key === 'p') {
             // resume the animation
+            event.preventDefault();
             paused = false;
             requestAnimationFrame(loop);
         } else if (!paused) {
@@ -440,15 +452,6 @@ function gameScreen() {
                 // release speed key
                 event.preventDefault();
                 controller.down = false;
-            } else if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                controller.left = true;
-            } else if (event.key === 'ArrowRight') {
-                event.preventDefault();
-                controller.right = true;
-            } else if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                controller.up = true;
             }
         }
     }
