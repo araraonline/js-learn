@@ -383,7 +383,7 @@ function gameScreen() {
         view.update();
         setTimeout(
             function() {requestAnimationFrame(loop)},
-            1000 / CONFIG.fps
+            1000 / CONFIG.fps - 5  // framerate hack
         );
     }
 
@@ -517,7 +517,7 @@ const CONFIG = {
     width: 10,
     height: 24,
     scale: 30,
-    fps: 60,
+    fps: 30,
 }
 const PIXEL_WIDTH = CONFIG.width * CONFIG.scale;
 const PIXEL_HEIGHT = CONFIG.height * CONFIG.scale;
