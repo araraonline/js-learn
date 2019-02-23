@@ -395,7 +395,6 @@ function gameScreen() {
 
     function receiveKeydown(event) {
         if (!paused) {
-            console.log(event.key);
             if (event.key === 'ArrowUp') {
                 event.preventDefault();
                 controller.up = true;
