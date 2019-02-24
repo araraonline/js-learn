@@ -14,11 +14,6 @@
  *                               ^                       +
  *                               |        restart        |
  *                               +-----------------------+
- *
- *
- *  TODO:
- *
- *  - Improve visuals
  */
 
 
@@ -116,7 +111,7 @@ function gameScreen() {
 
             // move piece down (or add it to the pile)
             if ((!controller.down && this.tick % 12 === 0) ||
-                (controller.down && this.tick % 2 === 0)) {
+                (controller.down && this.tick % 1 === 0)) {
                 let downPiece = piece.moveDown();
                 if (this._onBounds(downPiece) && !this._collides(downPiece, pile)) {
                     // piece can be moved down
